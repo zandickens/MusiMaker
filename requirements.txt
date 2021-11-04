@@ -1,0 +1,16 @@
+# Requirements for running the application.
+# To update run: pip freeze > requirements.txt 
+# To install all requirements, run: pip install -r requirements.tx. Could be added to app.py?
+
+audiosegment==0.23.0
+click==8.0.3
+Flask==2.0.2
+Flask-Login==0.5.0
+itsdangerous==2.0.1
+Jinja2==3.0.2
+MarkupSafe==2.0.1
+numpy==1.21.3
+pydub==0.25.1
+scipy==1.7.1
+webrtcvad==2.0.10
+Werkzeug==2.0.2
