@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/slate/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <b-navbar>
+                <template #brand>
+                    <b-navbar-item href="/">
+                        <img
+                            class="navbar-logo"
+                            src="static/assets/images/logo.png"
+                            alt="MusiMaker"
+                        >
+                    </b-navbar-item>
+                </template>
+                <template #start>
+
+                </template>
+        
+                <template #end>
+                    <b-navbar-item>
+                        <a href="https://github.com/zandickens/MusiMaker"><img class="github-logo"
+                            src="static/assets/images/github.png"
+                            alt="GitHub Repository"
+                        >
+                    </a>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
+        </template>
+
+        <div class="container">
+            <div class="columns home-banner">
+              <div class="column">
+                <figure class="image">
+                  <img src="static/assets/images/logo.png">
+                </figure>
+              </div>
+              <div class="column">
+                  <div class="content tagline">
+                      <h1>Genre classification for the avant-garde composer. <br> <br>
+                        Get started by uploading a .mp3 or .wav file below. 
+                    </h1>
+                  </div>
+              </div>
+            </div>
+      </div>
+
+      <div class="container file-upload">
+        <template>
+            <section>
+                <b-field>
+                    <b-upload v-model="dropFiles"
+                        drag-drop>
+                        <section class="section">
+                            <div class="content has-text-centered">
+                                <p>
+                                    <b-icon
+                                        pack="fas"
+                                        icon="upload"
+                                        size="is-large">
+                                    </b-icon>
+                                </p>
+                                <p>Drop your files here or click to upload</p>
+                            </div>
+                        </section>
+                    </b-upload>
+                </b-field>
+        
+                <div class="tags">
+                    <span v-if="dropFiles"
+                        class="tag is-primary" >
+                        ${dropFiles.name}
+                        <button class="delete is-small"
+                            type="button"
+                            @click="deleteDropFile()">
+                        </button>
+                    </span>
+                </div>
+
+                <b-button class="upload-button" @click="uploadFile">Upload</b-button>
+            </section>
+        </template>
+    </div>
+      
+
+    </div>
+</body>
+
+
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+
+<script type="application/javascript">
+    new Vue({
+        el: '#app',
+        delimiters: ['${', '}'],
+        data: {
+                dropFiles: null,
+        },
+        methods: {
+            deleteDropFile() {
+                this.dropFiles = null;
+            },
+            uploadFile() {
+                console.log(this.dropFiles);
+            }
+        }
+    })
+</script>
+
+</html>
