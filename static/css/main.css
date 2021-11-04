@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap');
+
+.navbar {
+  box-shadow: 0 3px 1px -3px rgba(0,0,0,.3),0 2px 2px 0 rgba(0,0,0,.24),0 1px 5px 0 rgba(0,0,0,.22) !important;
+}
+
+.github-logo {
+    max-height: 3.5rem !important;
+    position: relative;
+    top: 4px;
+}
+
+.navbar-logo {
+  max-height: 3.5rem !important;
+}
+
+
+.file-upload {
+  padding: 25px;
+  background-color:#2f3236;
+}
+
+.upload-container {
+  width: 100%;
+}
+
+label.upload {
+  width:100%;
+}
+
+.upload-draggable {
+  width:100%;
+}
+
+html {
+    overflow: auto !important;
+}
+
+.home-banner {
+    margin-top: 75px;
+}
+
+.tagline {
+    padding: 15px;
+    margin-top: 25px;
+}
+
+#loading-screen {
+min-width: 100%; min-height: 100%;
+position: absolute; top: 0; left: 0;
+}
