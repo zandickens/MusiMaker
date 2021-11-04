@@ -22,7 +22,6 @@ On Windows, this command will do:
 
 Once the (venv) is running, install Flask with the following command.
 
-Python3:
 ``` (venv) $ pip3 install flask ``` 
 
 That's it! Now just run the MusiMaker web app with
