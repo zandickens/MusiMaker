@@ -1,0 +1,2 @@
+model_checkpoint_path: "latest_weights"
+all_model_checkpoint_paths: "latest_weights"
