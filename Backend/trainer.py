@@ -100,9 +100,7 @@ model.save_weights("model.h5")
 print("Saved model to disk")
 
 
-# OPTIMIZATION (WIP)
-
-
+# Neural Net Optimization
 # batch_size = [10, 20, 40, 60, 80, 100]
 # epochs = [10, 50, 100]
 #validation_split = [0.1]
