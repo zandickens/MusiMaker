@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/slate/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <b-navbar>
+                <template #brand>
+                    <b-navbar-item href="/">
+                        <img class="navbar-logo" src="static/assets/images/logo.png" alt="MusiMaker">
+                    </b-navbar-item>
+                </template>
+                <template #start>
+
+                </template>
+
+                <template #end>
+                    <b-navbar-item>
+                        <a href="https://github.com/zandickens/MusiMaker">
+                            <img class="github-logo" src="static/assets/images/github.png" alt="GitHub Repository">
+                        </a>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
+        </template>
+
+        <div class='container'>
+            <div id='login-container' class='login-container'>
+                <div class='content'>
+                    <h1>${formType}</h1>
+                    {% if failed %}
+                    <a>${failed} failed.</a>
+                    {% endif %}
+                </div>
+                <form id='Login' action='{{ url_for("sign_in") }}' onsubmit="return validateLogin()">
+                    No account? <button @click='updateFormType()'>Create Account</button><br><br>
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="uname" required>
+                    <br><br>
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <br><br>
+                    <input type="submit" value='Login'>
+                </form>
+                <form id='Register' action='{{ url_for("register") }}' style='display:none'>
+                    Already have an account?<button @click='updateFormType()'>Login</button><br><br>
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="uname" required>
+                    <br><br>
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <br><br>
+                    <label for="conf"><b>Confirm</b></label>
+                    <input type="password" placeholder="Confirm Password" name="conf" required>
+                    <br><br>
+                    <input type="submit" value='Register'>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+<script src="/static/js/login.js"></script>
+
+</html>
