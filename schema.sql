@@ -9,15 +9,7 @@ CREATE TABLE songs(
     songId INT PRIMARY KEY,
     userId INT REFERENCES users(userId),
     filename VARCHAR,
-    blues FLOAT, 
-    classical FLOAT, 
-    country FLOAT, 
-    disco FLOAT, 
-    hiphop FLOAT, 
-    jazz FLOAT, 
-    metal FLOAT, 
-    pop FLOAT, 
-    reggae FLOAT, 
-    rock FLOAT,
+    classification VARCHAR,
+    confidence FLOAT,
     date DATE
 );
