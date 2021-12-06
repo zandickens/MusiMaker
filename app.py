@@ -6,10 +6,17 @@ from flask.templating import render_template
 from util import add_song, create_user, sign_in_user
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
+from werkzeug.utils import secure_filename
+
+EXTENSIONS = {'wav','mp3'}
 
 app = Flask(__name__)
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 app.secret_key = os.urandom(24)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in EXTENSIONS
 
 global user
 user = "no_current_user"
@@ -59,14 +66,21 @@ def sign_in():
 def upload_song():
     # need to get filename, classification, and confidence level from backend ssadas
     global user
-    # file = request
-    body = request.get_data("body")
-    print("\n\n" + str(request.get_data("name")))
-    # classification = "metal"
-    # confidence = 0.99
-    # if add_song(user, filename, classification, confidence):
-    #     return flask.redirect("http://localhost:5000/")
-    # print("error adding song")
+
+    if request.method == "POST":
+        if 'file' not in request.files:
+            print('File not found', flush=True)
+            return redirect("http://localhost:5000/")
+        file = request.files['file']
+        if file.filename == '':
+            print('No selected file', flush=True)
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            print('Success!', flush=True)
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('Backend\Queries', filename))
+            return flask.redirect("http://localhost:5000/")
+
     return flask.redirect("http://localhost:5000/")
 
 
