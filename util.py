@@ -1,4 +1,5 @@
 import os
+from datetime import date
 from flask import jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import (
@@ -46,14 +47,17 @@ class Songs(ORM_Base):
 
 
 def create_user(username, password):
-    password_hash = generate_password_hash(password)
-    users = Table("users", metadata, autoload=True)
-    db.execute(
-        users.insert(),
-        username=username,
-        password=password_hash,
-    )
-    return True
+    try:
+        password_hash = generate_password_hash(password)
+        users = Table("users", metadata, autoload=True)
+        db.execute(
+            users.insert(),
+            username=username,
+            password=password_hash,
+        )
+        return True
+    except:
+        return False
 
 
 def sign_in_user(username, password):
@@ -64,7 +68,34 @@ def sign_in_user(username, password):
         )
         .first()
     )
-
     if user is not None:
         return check_password_hash(user.password, password)
     return False
+
+
+def get_userid(username):
+    user = (
+        session.query(Users)
+        .filter(
+            Users.username == username,
+        )
+        .first()
+    )
+    return user.userid
+
+
+def add_song(user, filename, classification, confidence):
+    #  assuming user is present in table
+    try:
+        songs = Table("songs", metadata, autoload=True)
+        db.execute(
+            songs.insert(),
+            userid=get_userid(user),
+            filename=filename,
+            classification=classification,
+            confidence=confidence,
+            date=date.today(),
+        )
+        return True
+    except:
+        return False
