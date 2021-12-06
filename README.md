@@ -18,7 +18,7 @@ On a UNIX based operating system, to operate within the virtual environment, run
 
 On Windows, this command will do:
 
-``` venv\Scripts\activate ```
+``` venv/Scripts/activate ```
 
 Once the (venv) is running, install Flask with the following command.
 
