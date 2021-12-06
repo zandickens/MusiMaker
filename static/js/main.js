@@ -8,15 +8,13 @@ new Vue({
     deleteDropFile() {
       this.dropFiles = null;
     },
-    uploadFile() {
+    uploadFile() { 
       console.log(this.dropFiles);
-      fetch("/upload_song", {
-        method: "POST",
-        body: JSON.stringify({
-          filename: this.dropFiles.name,
-          data: this.dropFiles,
-        }),
-      });
+      var xhr=new XMLHttpRequest();
+      xhr.open('post','/upload_song',true);
+      const form = new FormData();
+      form.append('file',this.dropFiles);
+      xhr.send(form);
     },
   },
 });
