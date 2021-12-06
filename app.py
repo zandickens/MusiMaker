@@ -3,7 +3,7 @@ import json
 import os
 from flask import Flask, redirect, request, make_response, flash
 from flask.templating import render_template
-from util import create_user, sign_in_user
+from util import add_song, create_user, sign_in_user
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -42,7 +42,6 @@ def register():
     if create_user(username_entered, password_entered):
         set_user(username_entered)
         return flask.redirect("http://localhost:5000/")
-    flash("User creation failed.")
     return flask.redirect("http://localhost:5000/login")
 
 
@@ -54,6 +53,21 @@ def sign_in():
         set_user(username_entered)
         return flask.redirect("http://localhost:5000/")
     return flask.redirect("http://localhost:5000/login")
+
+
+@app.route("/upload_song", methods=["POST", "GET"])
+def upload_song():
+    # need to get filename, classification, and confidence level from backend ssadas
+    global user
+    # file = request
+    body = request.get_data("body")
+    print("\n\n" + str(request.get_data("name")))
+    # classification = "metal"
+    # confidence = 0.99
+    # if add_song(user, filename, classification, confidence):
+    #     return flask.redirect("http://localhost:5000/")
+    # print("error adding song")
+    return flask.redirect("http://localhost:5000/")
 
 
 if __name__ == "__main__":

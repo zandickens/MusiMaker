@@ -41,7 +41,7 @@
                     <a>${failed} failed.</a>
                     {% endif %}
                 </div>
-                <form id='Login' action='{{ url_for("sign_in") }}' onsubmit="return validateLogin()">
+                <form id='Login' action='{{ url_for("sign_in") }}'>
                     No account? <button @click='updateFormType()'>Create Account</button><br><br>
                     <label for="uname"><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" name="uname" required>

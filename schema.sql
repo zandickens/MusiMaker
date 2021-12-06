@@ -1,3 +1,5 @@
+-- psql -f schema.sql -U Aidan postgresql://localhost/postgres
+
 CREATE TABLE users(
     userId SERIAL NOT NULL PRIMARY KEY,
     username VARCHAR,
@@ -6,7 +8,7 @@ CREATE TABLE users(
 );
 
 CREATE TABLE songs(
-    songId INT PRIMARY KEY,
+    songId SERIAL NOT NULL PRIMARY KEY,
     userId INT REFERENCES users(userId),
     filename VARCHAR,
     classification VARCHAR,

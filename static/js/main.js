@@ -10,6 +10,13 @@ new Vue({
     },
     uploadFile() {
       console.log(this.dropFiles);
+      fetch("/upload_song", {
+        method: "POST",
+        body: JSON.stringify({
+          filename: this.dropFiles.name,
+          data: this.dropFiles,
+        }),
+      });
     },
   },
 });
