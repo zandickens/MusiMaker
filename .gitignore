@@ -3,3 +3,4 @@ Data
 env
 __pycache__
 .vscode
+db

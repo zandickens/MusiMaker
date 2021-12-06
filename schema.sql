@@ -9,6 +9,7 @@ CREATE TABLE users(
 
 CREATE TABLE songs(
     songId SERIAL NOT NULL PRIMARY KEY,
+    username VARCHAR,
     userId INT REFERENCES users(userId),
     filename VARCHAR,
     classification VARCHAR,

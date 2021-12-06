@@ -11,6 +11,10 @@
   top: 4px;
 }
 
+.header {
+  font-size:1.5em;
+}
+
 .user-logo {
   max-height: 2rem !important;
   position: relative;
@@ -28,8 +32,21 @@
   border-color: rgb(222, 199, 255);
 }
 
+.navbar-text-logout {
+  margin: 0;
+  position: relative;
+  color: rgb(222, 199, 255);
+  border-style: solid;
+  border: 1px;
+  border-color: rgb(222, 199, 255);
+}
+
 .navbar-logo {
   max-height: 3.5rem !important;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .file-upload {
@@ -62,12 +79,28 @@ html {
   margin-top: 25px;
 }
 
+.spectrogram_image {
+  filter: drop-shadow(0 0 0.25rem rgb(255, 255, 255));
+}
+
 #loading-screen {
   min-width: 100%;
   min-height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#results-table tbody tr:hover {
+  background-color:rgba(239,239,239, 0.9);
+  color: #000;
+  cursor: pointer; 
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .login-container {

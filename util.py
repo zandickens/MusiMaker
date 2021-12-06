@@ -38,8 +38,9 @@ class Users(ORM_Base):
 
 class Songs(ORM_Base):
     __tablename__ = "songs"
-    songId = Column(Integer, primary_key=True)
-    userId = Column(Integer)
+    songid = Column(Integer, primary_key=True)
+    userid = Column(Integer)
+    username = Column(String)
     filename = Column(String)
     classification = Column(String)
     confidence = Column(Float)
@@ -83,7 +84,6 @@ def get_userid(username):
     )
     return user.userid
 
-
 def add_song(user, filename, classification, confidence):
     #  assuming user is present in table
     try:
@@ -92,6 +92,7 @@ def add_song(user, filename, classification, confidence):
             songs.insert(),
             userid=get_userid(user),
             filename=filename,
+            username=user,
             classification=classification,
             confidence=confidence,
             date=date.today(),
@@ -99,3 +100,44 @@ def add_song(user, filename, classification, confidence):
         return True
     except:
         return False
+
+def get_all_songs():
+    songs = session.query(Songs).all()
+    # for song in songs:
+    # for i in range(0,10):
+    # add_song('aidan', 'test'+str(i),'test',0.0)
+    song_arr = []
+    for song in songs:
+        song_arr.append({
+            'song_id' : song.songid,
+            'user_id' : song.userid,
+            'user_name' : song.username,
+            'filename' : song.filename,
+            'classification' : song.classification,
+            'confidence' : song.confidence,
+            'date' : song.date.strftime('%m-%d-%Y')
+        })
+    return song_arr
+
+def get_user_songs(username):
+    songs = session.query(Songs).join(Users, Users.userid==Songs.userid).filter(Users.username == username).filter( Songs.userid == Users.userid ).all()
+    song_arr = []
+    for song in songs:
+        song_arr.append({
+            'song_id' : song.songid,
+            'user_id' : song.userid,
+            'user_name' : song.username,
+            'filename' : song.filename,
+            'classification' : song.classification,
+            'confidence' : song.confidence,
+            'date' : song.date.strftime('%m-%d-%Y')
+        })
+    return song_arr
+
+def get_song(filename):
+    songs = (
+        session.query(Songs)
+        .filter(
+            Songs.filename == filename,
+        )
+    )

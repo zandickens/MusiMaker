@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
 </head>
 
 <body>
@@ -18,23 +19,35 @@
                     <b-navbar-item href="/">
                         <img class="navbar-logo" src="static/assets/images/logo.png" alt="MusiMaker">
                     </b-navbar-item>
+                    <b-navbar-item href="/global_uploads">
+                        <a class="navbar-text" alt="Global Uploads">
+                            Global Uploads
+                            </a>
+                    </b-navbar-item>
                 </template>
                 <template #start>
 
                 </template>
 
                 <template #end>
+                    {% if user != "no_current_user" %}
                     <b-navbar-item>
-                        {% if user != "no_current_user" %}
-                        <a class='navbar-text'>
+                        <a class='navbar-text' href='/user_uploads'>
                             {{user}}
                         </a>
-                        {% else %}
-                        <a href='login' class='navbar-text'>
-                            SIGN IN
-                        </a>
-                        {% endif %}
                     </b-navbar-item>
+                    <b-navbar-item>
+                        <a class='navbar-text-logout' href='/sign_out'>
+                            Logout
+                        </a>
+                    </b-navbar-item>
+                    {% else %}
+                    <b-navbar-item>
+                    <a href='login' class='navbar-text'>
+                        SIGN IN
+                    </a>
+                    </b-navbar-item>
+                    {% endif %}
                     <b-navbar-item>
                         <a href="https://github.com/zandickens/MusiMaker">
                             <img class="github-logo" src="static/assets/images/github.png" alt="GitHub Repository">
@@ -62,7 +75,6 @@
         </div>
 
         <div class="container file-upload">
-            <form id='song_upload' action='{{ url_for("upload_song") }}'>
                 <template>
                     <section>
                         <b-field>
@@ -91,7 +103,6 @@
                         <b-button class="upload-button" @click="uploadFile">Upload</b-button>
                     </section>
                 </template>
-            </form>
         </div>
 
 
@@ -104,5 +115,8 @@
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
 <script src="/static/js/main.js"></script>
+<script>
+    const user = {{user|tojson}}
+</script>
 
 </html>
