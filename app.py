@@ -1,7 +1,9 @@
 import flask
 import json
 import os
+import base64
 import sys
+from pathlib import Path
 from flask import Flask, redirect, request, make_response, flash, url_for, Response
 from flask.templating import render_template
 from util import add_song, create_user, sign_in_user, get_all_songs, get_user_songs, get_song, generate_confidence_chart
@@ -81,14 +83,15 @@ def upload_song():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            os.mkdir('static/queries/' + filename)
-            file.save(os.path.join('static/queries/' + filename + '/', filename))
+            
+            file_path = os.path.join('static/queries/' + filename + '/', filename)
+            Path('static/queries/' + filename).mkdir(parents=True, exist_ok=True)
+            file.save(file_path)
             print('File saved to disk.')
-            generate_spectrogram(filename)
+            generate_spectrogram(file_path)
             # classify song
-            generate_confidence_chart([("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2")],filename)
-
-            add_song(user,filename,"Blues",100, 150, 200, 55, 5, 5, 5, 5, 5, 5, 5, 5, 5)
+            generate_confidence_chart([("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"), ("metal",".2"), ("metal",".2"), ("metal",".2")], file_path)
+            add_song(user,filename,"Blues",100,  90, 30, 55, 5, 5, 5, 5, 5, 5, 5, 5, 5)
             return flask.redirect(url_for('get_song_results',username=user, filename=filename))
             
 
@@ -111,9 +114,11 @@ def get_user_uploads(username):
 
 @app.route("/song_results/<username>/<filename>", methods=["POST", "GET"])
 def get_song_results(username, filename):
-    chartFilename =  filename + '_chart.png'
+    songname = filename.split('.')[0]
+    chartFilename =  f"{songname}-chart.png"
+    spectrogramFilename = f"{songname}-spectrogram.png"
     song = get_song(username,filename)
-    return flask.render_template("song_results.html",user=user, username=username, filename=filename, song=song, chartFilename=chartFilename)
+    return flask.render_template("song_results.html",user=user, username=username, filename=filename, song=song, chartFilename=chartFilename, spectrogramFilename = spectrogramFilename)
 
 
 if __name__ == "__main__":

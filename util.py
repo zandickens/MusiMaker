@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from datetime import datetime
 from flask import jsonify
+from pathlib import Path
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import (
     create_engine,
@@ -217,20 +218,28 @@ def get_song(username,filename):
     }
     return song
 
-def generate_confidence_chart(confidenceArray, filename):
-    labels = [elem[0].upper() for elem in confidenceArray]
+def generate_confidence_chart(confidenceArray, file_path):
+    file_name = file_path.split('/')[-1]
+    file_type = file_name.split('.')[1]
+    song_name = file_name.split('.')[0]
+    file_parent_path = Path('/'.join(file_path.split('/')[:-1]))
+
+    labels = [elem[0].capitalize() for elem in confidenceArray]
     values = [elem[1] for elem in confidenceArray]
-    colors = ['#ff6b81','#5352ed','#eccc68','#ff7f50','#7bed9f','#57606f']
-    explode = (.1,.1,.1,.1,.1,.1,.1,.1,.1,.1)
+
+    colors = ['#e55039','#009432','#1e3799','#fa983a','#079992','#5758BB']
+    explode = [.1 for elem in confidenceArray]
     COLOR = 'white'
+    mpl.use('Agg')
     mpl.rcParams['text.color'] = COLOR
     mpl.rcParams['axes.labelcolor'] = COLOR
     mpl.rcParams['xtick.color'] = COLOR
     mpl.rcParams['ytick.color'] = COLOR
+    mpl.rcParams['font.size'] = 20
+    mpl.rcParams["font.family"] = "Arial"
     fig1, ax1 = plt.subplots()
     ax1.pie(values, colors=colors, explode=explode, labels=labels, autopct='%1.1f%%',
         shadow=False, startangle=0)
     fig1.set_facecolor((.2,.2,.2))
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.      
-
-    plt.savefig("static/queries/" + filename + "/" + filename + "_chart.png", dpi=300)
+    plt.savefig(file_parent_path / f"{song_name}-chart.png", dpi=300)

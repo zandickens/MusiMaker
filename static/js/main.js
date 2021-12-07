@@ -3,6 +3,8 @@ new Vue({
   delimiters: ["${", "}"],
   data: {
     dropFiles: null,
+    isLoading: false,
+    isFullPage: true
   },
   methods: {
     deleteDropFile() {
@@ -23,7 +25,13 @@ new Vue({
               window.location.href = xhr.responseURL;
           }
       };
-      console.log(xhr);
     },
+    openLoading() {
+      console.log("hello world");
+      this.isLoading = true
+      setTimeout(() => {
+          this.isLoading = false
+      }, 10 * 1000)
+    }
   },
 });

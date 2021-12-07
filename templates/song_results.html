@@ -57,10 +57,10 @@
         </template>
 
         <div class="container">
-            <div class="columns home-banner">
+            <div class="columns">
                 <div class="column">
-                    <div class="content tagline header">
-                        <h1> {{song.filename}} 
+                    <div class="content tagline header white-font">
+                        <h1 class="white-font"> {{song.filename}} 
                         </h1>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
             <div class="columns">
                 <div class="column is-three-fifths">
                     <div class="container" id='results-table'>
-                        <div class="content"><h2> Classification Results </h2></div>
+                        <div class="content white-font"><h2 class="white-font"> Classification Results </h2></div>
                         <table class='table is-striped' style='font-size: larger;width:100%;'>
                             <tr>
                                 <td>Top Classification</td>
@@ -128,7 +128,7 @@
                             </tr>
 
                         </table>
-                        <div class="content"><h2> Logistics </h2></div>
+                        <div class="content white-font"><h2 class="white-font"> Logistics </h2></div>
                         <table class='table is-striped' style='font-size: larger;width:100%;'>
                             <tr>
                                 <td>Uploaded By</td>
@@ -143,11 +143,12 @@
                     </div>
                 </div>
                 <div class="column">
+                    <div class="content white-font"><h2 class="white-font"> Spectrogram </h2></div>
                     <b-image class="spectrogram_image"
-                        src="/Backend/Queries/{{filename}}/{{spectrogramFilename}}"
-                        placeholder="/static/assets/images/spectrogram_placeholder.png"
+                        src="/static/queries/{{filename}}/{{spectrogramFilename}}"
                         ratio="4by3"
                     ></b-image>
+                    <div class="content white-font"><h2 class="white-font"> Confidence Chart </h2></div>
                     <b-image class="confidence_chart" :src="'/static/queries/{{filename}}/{{chartFilename}}'"></b-image>
                 </div>
             </div>
