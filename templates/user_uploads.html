@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/slate/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <b-navbar>
+                <template #brand>
+                    <b-navbar-item href="/">
+                        <img class="navbar-logo" src="/static/assets/images/logo.png" alt="MusiMaker">
+                    </b-navbar-item>
+                    <b-navbar-item href="/global_uploads">
+                        <a class="navbar-text" alt="Global Results">
+                            Global Uploads
+                            </a>
+                    </b-navbar-item>
+                </template>
+                <template #start>
+
+                </template>
+
+                <template #end>
+                    {% if user != "no_current_user" %}
+                    <b-navbar-item>
+                        <a class='navbar-text' href=''>
+                            {{user}}
+                        </a>
+                    </b-navbar-item>
+                    <b-navbar-item>
+                        <a class='navbar-text-logout' href='/sign_out'>
+                            Logout
+                        </a>
+                    </b-navbar-item>
+                    {% else %}
+                    <b-navbar-item>
+                    <a href='login' class='navbar-text'>
+                        SIGN IN
+                    </a>
+                    </b-navbar-item>
+                    {% endif %}
+                    <b-navbar-item>
+                        <a href="https://github.com/zandickens/MusiMaker">
+                            <img class="github-logo" src="/static/assets/images/github.png" alt="GitHub Repository">
+                        </a>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
+        </template>
+
+        <div class="container">
+            <div class="columns home-banner">
+                <div class="column">
+                    <div class="content tagline header">
+                        <h1 class="capitalize"> {{user}}'s uploads
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="results-table">
+            <b-table :striped="true" :data="songs" :columns="columns" @click="songClicked($event)"></b-table>
+        </div>
+
+
+    </div>
+</body>
+
+
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+<script>
+    var server_songs = {{ songs | tojson }};
+    var vue_init = new Vue({
+        el: "#app",
+        delimiters: ["${", "}"],
+        data: {
+            songs: server_songs,
+            columns : [
+                {
+                    field: 'song_id',
+                    label: 'Song ID',
+                    numeric:true 
+                },
+                {
+                    field: 'filename',
+                    label: 'Filename',
+                    numeric:false 
+                },
+                {
+                    field: 'classification',
+                    label: 'Classification',
+                    numeric:false 
+                },
+                {
+                    field: 'confidence',
+                    label: 'Confidence',
+                    numeric:false 
+                },
+                {
+                    field: 'date',
+                    label: 'Date',
+                    numeric:false 
+                },
+            ]
+        },
+        methods: {
+            songClicked: function(event) {
+                window.location.href = '/song_results/' + event.user_name + '/' + event.filename
+            }
+        },
+    });
+
+</script>
+
+</html>

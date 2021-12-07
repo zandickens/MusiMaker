@@ -1,3 +1,5 @@
+-- psql -f schema.sql -U Aidan postgresql://localhost/postgres
+
 CREATE TABLE users(
     userId SERIAL NOT NULL PRIMARY KEY,
     username VARCHAR,
@@ -6,18 +8,11 @@ CREATE TABLE users(
 );
 
 CREATE TABLE songs(
-    songId INT PRIMARY KEY,
+    songId SERIAL NOT NULL PRIMARY KEY,
+    username VARCHAR,
     userId INT REFERENCES users(userId),
     filename VARCHAR,
-    blues FLOAT, 
-    classical FLOAT, 
-    country FLOAT, 
-    disco FLOAT, 
-    hiphop FLOAT, 
-    jazz FLOAT, 
-    metal FLOAT, 
-    pop FLOAT, 
-    reggae FLOAT, 
-    rock FLOAT,
+    classification VARCHAR,
+    confidence FLOAT,
     date DATE
 );

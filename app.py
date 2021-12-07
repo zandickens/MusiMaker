@@ -1,34 +1,115 @@
 import flask
 import json
 import os
-from flask import Flask, redirect, request, make_response
-from util import create_user, sign_in_user
+from flask import Flask, redirect, request, make_response, flash, url_for, Response
+from flask.templating import render_template
+from util import add_song, create_user, sign_in_user, get_all_songs, get_user_songs
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
+from werkzeug.utils import secure_filename
+
+EXTENSIONS = {'wav','mp3'}
 
 app = Flask(__name__)
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-SECRET_KEY = os.urandom(24)
+app.secret_key = os.urandom(24)
 
-@app.route('/')
+global user
+user = "no_current_user"
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in EXTENSIONS
+
+def set_user(username):
+    global user
+    user = username
+
+
+@app.route("/")
 def homepage():
-    return flask.render_template('index.html')
+    return flask.render_template("index.html", user=user)
 
-@app.route('/upload', methods = ['GET', 'POST'])
-def upload_file():
-    return 'file uploaded successfully'
 
-@app.route('/register', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
+def login_page():
+    return flask.render_template("login.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    username_entered = request.args.get('username')
-    password_entered = request.args.get('password')
-    return create_user(username_entered,password_entered)
+    username_entered = request.args.get("uname")
+    password_entered = request.args.get("psw")
+    if create_user(username_entered, password_entered):
+        set_user(username_entered)
+        return flask.redirect("http://localhost:5000/")
+    return flask.redirect("http://localhost:5000/login")
 
-@app.route('/sign_in', methods=["GET", "POST"])
+
+@app.route("/sign_in", methods=["GET", "POST"])
 def sign_in():
-    username_entered = request.args.get('username')
-    password_entered = request.args.get('password')
-    return sign_in_user(username_entered,password_entered)
+    username_entered = request.args.get("uname")
+    password_entered = request.args.get("psw")
+    if sign_in_user(username_entered, password_entered):
+        set_user(username_entered)
+        return flask.redirect("http://localhost:5000/")
+    return flask.redirect("http://localhost:5000/login")
+
+@app.route("/sign_out", methods=["GET", "POST"])
+def sign_out():
+        set_user("no_current_user")
+        return flask.redirect("http://localhost:5000/")
+
+
+@app.route("/upload_song", methods=["POST", "GET"])
+def upload_song():
+    # need to get filename, classification, and confidence level from backend ssadas
+    global user
+    if user == "no_current_user":
+        flash ("NOT SIGNED IN")
+        return flask.redirect("http://localhost:5000/")
+    if request.method == "POST":
+        if 'file' not in request.files:
+            print('File not found', flush=True)
+            return redirect("http://localhost:5000/")
+        file = request.files['file']
+        if file.filename == '':
+            print('No selected file', flush=True)
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('Backend\Queries', filename))
+            print('File saved to disk.')
+
+            # classify song
+
+            add_song(user,filename,"Electronic Dance Music",100)
+            return flask.redirect(url_for('get_song_results',user=user, filename=filename))
+            
+
+@app.route("/global_uploads")
+def song_results():
+    songs = get_all_songs()
+    return flask.render_template("global_uploads.html", user=user, songs=songs)
+
+@app.route("/user_uploads", methods=["POST", "GET"])
+def get_user_page():
+    if user == "no_current_user":
+        return flask.redirect("http://localhost:5000")
+    songs = get_user_songs(user)
+    return flask.redirect(url_for('get_user_uploads',user=user))
+
+@app.route("/user_uploads/<user>", methods=["POST", "GET"])
+def get_user_uploads(user):
+    songs = get_user_songs(user)
+    return flask.render_template("user_uploads.html", user=user, songs=songs)
+
+@app.route("/song_results/<user>/<filename>", methods=["POST", "GET"])
+def get_song_results(user, filename):
+    songs = get_all_songs()
+    return flask.render_template("song_results.html", user=user, filename=filename, songs=songs)
+
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host="0.0.0.0", debug=True)

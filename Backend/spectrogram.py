@@ -6,10 +6,12 @@ import matplotlib.pyplot as plt
 from pydub import AudioSegment
 import subprocess
 
+#Creating a mel spectrogram using the librosa package and open-source pydub library
+
 PATH = "./Queries/"
 filename = 'convert.mp3'
 filetype = filename[-3:]
-# AudioSegment.converter = "C:\LMU CS\ffmpeg\bin"
+
 
 def create_spectrogram(audio_path):
     y, sr = librosa.load(audio_path)

@@ -1,23 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap");
 
 .navbar {
-  box-shadow: 0 3px 1px -3px rgba(0,0,0,.3),0 2px 2px 0 rgba(0,0,0,.24),0 1px 5px 0 rgba(0,0,0,.22) !important;
+  box-shadow: 0 3px 1px -3px rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.24),
+    0 1px 5px 0 rgba(0, 0, 0, 0.22) !important;
 }
 
 .github-logo {
-    max-height: 3.5rem !important;
-    position: relative;
-    top: 4px;
+  max-height: 3.5rem !important;
+  position: relative;
+  top: 4px;
+}
+
+.header {
+  font-size:1.5em;
+}
+
+.user-logo {
+  max-height: 2rem !important;
+  position: relative;
+  top: 4px;
+  filter: invert(78%) sepia(68%) saturate(551%) hue-rotate(193deg)
+    brightness(103%) contrast(102%);
+}
+
+.navbar-text {
+  margin: 0;
+  position: relative;
+  color: rgb(222, 199, 255);
+  border-style: solid;
+  border: 1px;
+  border-color: rgb(222, 199, 255);
+}
+
+.navbar-text-logout {
+  margin: 0;
+  position: relative;
+  color: rgb(222, 199, 255);
+  border-style: solid;
+  border: 1px;
+  border-color: rgb(222, 199, 255);
 }
 
 .navbar-logo {
   max-height: 3.5rem !important;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
 
 .file-upload {
   padding: 25px;
-  background-color:#2f3236;
+  background-color: #2f3236;
 }
 
 .upload-container {
@@ -25,27 +59,51 @@
 }
 
 label.upload {
-  width:100%;
+  width: 100%;
 }
 
 .upload-draggable {
-  width:100%;
+  width: 100%;
 }
 
 html {
-    overflow: auto !important;
+  overflow: auto !important;
 }
 
 .home-banner {
-    margin-top: 75px;
+  margin-top: 75px;
 }
 
 .tagline {
-    padding: 15px;
-    margin-top: 25px;
+  padding: 15px;
+  margin-top: 25px;
+}
+
+.spectrogram_image {
+  filter: drop-shadow(0 0 0.25rem rgb(255, 255, 255));
 }
 
 #loading-screen {
-min-width: 100%; min-height: 100%;
-position: absolute; top: 0; left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#results-table tbody tr:hover {
+  background-color:rgba(239,239,239, 0.9);
+  color: #000;
+  cursor: pointer; 
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.login-container {
+  margin: 100px auto;
+  width: 50%;
 }
