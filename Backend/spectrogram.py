@@ -12,7 +12,6 @@ PATH = "./Queries/"
 filename = 'convert.mp3'
 filetype = filename[-3:]
 
-
 def create_spectrogram(audio_path):
     y, sr = librosa.load(audio_path)
     audio, _ = librosa.effects.trim(y)
@@ -23,6 +22,7 @@ def create_spectrogram(audio_path):
     librosa.display.specshow(spectrogram_decible, sr=sr)
     # plt.colorbar(format='%+2.0f dB')
     plt.show()
+    return tempo
 
 
 if filetype == 'mp3':

@@ -81,6 +81,11 @@ html {
 
 .spectrogram_image {
   filter: drop-shadow(0 0 0.25rem rgb(255, 255, 255));
+  margin-bottom: 20px;
+}
+
+.confidence_chart {
+  filter: drop-shadow(0 0 0.25rem rgb(255, 255, 255));
 }
 
 #loading-screen {

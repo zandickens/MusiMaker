@@ -60,26 +60,98 @@
             <div class="columns home-banner">
                 <div class="column">
                     <div class="content tagline header">
-                        <h1> Classification Results 
+                        <h1> {{song.filename}} 
                         </h1>
                     </div>
                 </div>
             </div>
             <div class="columns">
                 <div class="column is-three-fifths">
-                    <div class="container" id="results-table">
-                        <b-table :striped="true" :data="songs" :columns="columns"></b-table>
+                    <div class="container" id='results-table'>
+                        <div class="content"><h2> Classification Results </h2></div>
+                        <table class='table is-striped' style='font-size: larger;width:100%;'>
+                            <tr>
+                                <td>Top Classification</td>
+                                <td>{{song.top_classification}}</td>
+                            </tr>
+                            <tr>
+                                <td>Confidence</td>
+                                <td>{{song.confidence}}</td>
+                            </tr>
+                            <tr>
+                                <td>Blues</td>
+                                <td>{{song.blues}}</td>
+                            </tr>
+                            <tr>
+                                <td>Classical</td>
+                                <td>{{song.classical}}</td>
+                            </tr>
+                            <tr>
+                                <td>Country</td>
+                                <td>{{song.country}}</td>
+                            </tr>
+                            <tr>
+                                <td>Disco</td>
+                                <td>{{song.disco}}</td>
+                            </tr>
+                            <tr>
+                                <td>Hip Hop</td>
+                                <td>{{song.hiphop}}</td>
+                            </tr>
+                            <tr>
+                                <td>Jazz</td>
+                                <td>{{song.jazz}}</td>
+                            </tr>
+                            <tr>
+                                <td>Metal</td>
+                                <td>{{song.metal}}</td>
+                            </tr>
+                            <tr>
+                                <td>Pop</td>
+                                <td>{{song['pop']}}</td>
+                            </tr>
+                            <tr>
+                                <td>Reggae</td>
+                                <td>{{song.reggae}}</td>
+                            </tr>
+                            <tr>
+                                <td>Rock</td>
+                                <td>{{song.rock}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tempo</td>
+                                <td>{{song.tempo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Length</td>
+                                <td>{{song.length}}</td>
+                            </tr>
+
+                        </table>
+                        <div class="content"><h2> Logistics </h2></div>
+                        <table class='table is-striped' style='font-size: larger;width:100%;'>
+                            <tr>
+                                <td>Uploaded By</td>
+                                <td>{{song.user_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Date Uploaded</td>
+                                <td>{{song.date}}</td>
+                            </tr>
+
+                        </table>
                     </div>
                 </div>
                 <div class="column">
                     <b-image class="spectrogram_image"
-                        src="/static/assets/images/spectrogram_placeholder.png"
+                        src="/Backend/Queries/{{filename}}/{{spectrogramFilename}}"
+                        placeholder="/static/assets/images/spectrogram_placeholder.png"
                         ratio="4by3"
                     ></b-image>
+                    <b-image class="confidence_chart" :src="'/static/queries/{{filename}}/{{chartFilename}}'"></b-image>
                 </div>
             </div>
         </div>
-
     </div>
 
     
@@ -92,54 +164,19 @@
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
 <script src="/static/js/main.js"></script>
 <script>
-    var server_songs = {{ songs | tojson }};
+    var server_song = {{ song | tojson }};
     var vue_init = new Vue({
         el: "#app",
         delimiters: ["${", "}"],
         data: {
-            songs: server_songs,
-            columns : [
-                {
-                    field: 'song_id',
-                    label: 'Song ID',
-                    numeric:true 
-                },
-                {
-                    field: 'user_id',
-                    label: 'User ID',
-                    numeric:true 
-                },
-                {
-                    field: 'user_name',
-                    label: 'Username',
-                    numeric:false
-                },
-                {
-                    field: 'filename',
-                    label: 'Filename',
-                    numeric:false 
-                },
-                {
-                    field: 'classification',
-                    label: 'Classification',
-                    numeric:false 
-                },
-                {
-                    field: 'confidence',
-                    label: 'Confidence',
-                    numeric:false 
-                },
-                {
-                    field: 'date',
-                    label: 'Date',
-                    numeric:false 
-                },
-            ]
+            
         },
         methods: {
+            songClicked: function(event) {
+                window.location.href = '/song_results/' + event.user_name + '/' + event.filename
+            }
         },
     });
-
 </script>
 
 </html>

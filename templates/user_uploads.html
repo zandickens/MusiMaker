@@ -42,7 +42,7 @@
                     </b-navbar-item>
                     {% else %}
                     <b-navbar-item>
-                    <a href='login' class='navbar-text'>
+                    <a href='/login' class='navbar-text'>
                         SIGN IN
                     </a>
                     </b-navbar-item>
@@ -60,7 +60,7 @@
             <div class="columns home-banner">
                 <div class="column">
                     <div class="content tagline header">
-                        <h1 class="capitalize"> {{user}}'s uploads
+                        <h1 class="capitalize"> {{username}}'s uploads
                         </h1>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                     numeric:false 
                 },
                 {
-                    field: 'classification',
+                    field: 'top_classification',
                     label: 'Classification',
                     numeric:false 
                 },
