@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import tensorflow as tf
 from keras.models import model_from_json
+import soundfile as sf
 
 
 # LOADING A SAVED MODEL
@@ -46,12 +47,11 @@ y, sr = librosa.load('convert-snippet.wav')
 #Add rounded values into seperate array as we need exact confidence later
 sample_data = []
 for genre in result_genres:
-    sample_data.append((genre[0], round(150*genre[1])))    
+    sample_data.append((genre[0], round(100*genre[1])))    
 
 sample_audio = []
-
 for genre in sample_data:
-    for samples in range(genre[1]):
+    for samples in range(int(genre[1]/2)):
         sample_audio.append('D:\\Downloads\\archive (1)\\Data\\genres_original\\{}\\{}.{:0>5d}.wav'.format(genre[0], genre[0], random.randint(0, 99)))
 
 output_audio = None
@@ -66,6 +66,7 @@ for audio in sample_audio:
         n_samples += 1
     except:
         continue
+print(n_samples)
 
 # print(current_y)
 # output_audio = output_audio / n_samples
@@ -75,13 +76,20 @@ OUT_PATH = 'D:\\Downloads\\archive (1)\\Generation\\test.wav'
 
 audio, _ = librosa.effects.trim(output_audio)
 
-spec = librosa.feature.melspectrogram(output_audio, sr=sr, n_mels=255)
+spec = librosa.feature.melspectrogram(output_audio, sr=sr, n_mels=200)
 spectrogram_decible = librosa.amplitude_to_db(spec, ref=np.max)
 librosa.display.specshow(spectrogram_decible, sr=sr)
-# spec = librosa.feature.melspectrogram(output_audio, sr=sr)
-#librosa.display.specshow(spec)
 plt.savefig('D:\\Downloads\\archive (1)\\Generation\\test.png')
+
+output_audio = librosa.util.normalize(output_audio)
+sf.write(OUT_PATH, output_audio, sr, subtype='PCM_16')
+
+
+
+
 plt.show()
+
+
 
 # IPython.display.Audio(data=current_y, rate=22050,autoplay=True)
 
