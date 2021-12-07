@@ -9,6 +9,9 @@ This application would be useful for those skilled at making music to generate a
 
 ## Setup
 
+**Requirements**
+  - [ffmpeg](https://www.ffmpeg.org/)
+
 To run MusiMaker, requirements.txt must be installed locally. First, create a virtual environment in the root of the project directory.
 
 ``` python3 -m venv venv ```
