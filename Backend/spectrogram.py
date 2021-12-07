@@ -11,38 +11,39 @@ import subprocess
 PATH = "./Queries/"
 filename = 'convert.mp3'
 filetype = filename[-3:]
-AudioSegment.converter = "C:\\Tools\\ffmpeg\\bin"
+
 
 def create_spectrogram(audio_path):
     y, sr = librosa.load(audio_path)
     audio, _ = librosa.effects.trim(y)
+    tempo = librosa.beat.tempo(audio)
     librosa.display.waveplot(audio, sr=sr)
-    n_fft = 2048
-    hop_length = 512
-
-    #Create a Mel Spectrogram using the librosa library
-    spectrogram = librosa.feature.melspectrogram(audio, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=90)
+    spectrogram = librosa.feature.melspectrogram(audio, sr=sr, n_mels=200)
     spectrogram_decible = librosa.power_to_db(spectrogram, ref=np.max)
-    librosa.display.specshow(spectrogram_decible, sr=sr, hop_length=hop_length)
+    librosa.display.specshow(spectrogram_decible, sr=sr)
+    # plt.colorbar(format='%+2.0f dB')
     plt.show()
 
 
 if filetype == 'mp3':
     #Convert to wav
-    #WIP: working to fix pydub library issues
+    try:
+        # Opening file and extracting segment
+        song = AudioSegment.from_file(PATH+filename, format='mp3', start_second=0, duration=30)
 
-    # sound = AudioSegment.from_mp3("{path}{filename}".format(path=PATH, filename=filename))
-    # sound = AudioSegment.from_mp3("convert.mp3")
-    subprocess.call(['ffmpeg','-t','30','convert.mp3', 'convert.mp3', '-y'])
-    subprocess.call(['ffmpeg','-i','convert.mp3','convert.wav'])
-    wav_path = "{path}{wav_filename}".format(path=PATH, wav_filename=filename[:-3] + "wav")
-    # sound.export(wav_path, format="wav")
-    create_spectrogram(wav_path)
-
+        # Saving
+        song.export( filename[:-4]+'-snippet.wav', format="wav")
+        wav_path = './{path}'.format(path=filename[:-4]+'-snippet.wav')
+        print("hey")
+        create_spectrogram(wav_path)
+    except:
+        sys.exit("File does not exist")
 
 elif filename[-3:] == 'wav':
-    create_spectrogram("{path}{filename}".format(path=PATH, filename=filename))
-
+    try:
+        create_spectrogram("{path}{filename}".format(path=PATH, filename=filename))
+    except:
+        sys.exit("File does not exist")
 else:
     sys.exit("Unsupported filetype, please input a .mp3 or .wav file")
 
