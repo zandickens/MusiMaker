@@ -27,7 +27,7 @@ def create_spectrogram(audio_path):
 
 if filetype == 'mp3':
     #Convert to wav
-    try:
+    # try:
         # Opening file and extracting segment
         song = AudioSegment.from_file(PATH+filename, format='mp3', start_second=0, duration=30)
 
@@ -36,8 +36,8 @@ if filetype == 'mp3':
         wav_path = './{path}'.format(path=filename[:-4]+'-snippet.wav')
         print("hey")
         create_spectrogram(wav_path)
-    except:
-        sys.exit("File does not exist")
+    # except:
+    #     sys.exit("File does not exist")
 
 elif filename[-3:] == 'wav':
     try:

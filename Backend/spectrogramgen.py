@@ -24,22 +24,21 @@ def create_spectrogram(audio_path):
 
 def generate_spectrogram(filename):
     filetype = filename[-3:]
-    path = './static/queries/'+filename
+    path = '../static/queries/'+filename[:-4] + '/'
+    filepath = path + filename
+    print(path + filename,filetype)
 
     if filetype == 'mp3':
         #Convert to wav
-        try:
-            # Opening file and extracting segment
-            song = AudioSegment.from_file(path, format='mp3', start_second=0, duration=30)
 
-            # Saving
-            song.export( path[:-4]+'-snippet.wav', format="wav")
-            wav_path = './{path}'.format(path=filename[:-4]+'-snippet.wav')
-            print("hey")
-            create_spectrogram(wav_path)
-        except:
-            sys.exit("File does not exist")
-
+        # Opening file and extracting segment
+        song = AudioSegment.from_file(filepath, format='mp3', start_second=0, duration=30)
+        # Saving
+        song.export( path[:-4]+'-snippet.wav', format="wav")
+        wav_path = './{path}'.format(path=filename[:-4]+'-snippet.wav')
+        print("hey")
+        create_spectrogram(wav_path)
+        # sys.exit("File does not exist")
     elif filename[-3:] == 'wav':
         try:
             create_spectrogram("{path}{filename}".format(path=PATH, filename=filename))
