@@ -26,5 +26,5 @@ CREATE TABLE songs(
     rock FLOAT,
     tempo FLOAT,
     length FLOAT,
-    date DATETIME
+    date DATE
 );
