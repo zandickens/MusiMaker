@@ -1,12 +1,14 @@
 import flask
 import json
 import os
+import sys
 from flask import Flask, redirect, request, make_response, flash, url_for, Response
 from flask.templating import render_template
 from util import add_song, create_user, sign_in_user, get_all_songs, get_user_songs, get_song, generate_confidence_chart
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
+from Backend.spectrogramgenerator import generate_spectrogram
 
 EXTENSIONS = {'wav','mp3'}
 
@@ -82,7 +84,7 @@ def upload_song():
             os.mkdir('static/queries/' + filename)
             file.save(os.path.join('static/queries/' + filename + '/', filename))
             print('File saved to disk.')
-
+            generate_spectrogram(filename)
             # classify song
             generate_confidence_chart([("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2")],filename)
 
