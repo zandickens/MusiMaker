@@ -11,12 +11,14 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
+from Backend.queryflask import predict, load_latest_model
 
 EXTENSIONS = {'wav','mp3'}
 
 app = Flask(__name__)
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 app.secret_key = os.urandom(24)
+prediction_model = load_latest_model()
 
 global user
 user = "no_current_user"
@@ -48,7 +50,7 @@ def register():
     if create_user(username_entered, password_entered):
         set_user(username_entered)
         return flask.redirect("http://localhost:5000/")
-    return flask.redirect("http://localhost:5000/login")
+    return flask.redirect("http://localhost:5000/login") 
 
 
 @app.route("/sign_in", methods=["GET", "POST"])
@@ -83,17 +85,22 @@ def upload_song():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            
             file_path = os.path.join('static/queries/' + filename + '/', filename)
             Path('static/queries/' + filename).mkdir(parents=True, exist_ok=True)
             file.save(file_path)
             print('File saved to disk.')
-            generate_spectrogram(file_path)
-            # classify song
-            generate_confidence_chart([("metal",".2"),("metal",".2"),("metal",".2"),("metal",".2"), ("metal",".2"), ("metal",".2"), ("metal",".2")], file_path)
-            add_song(user,filename,"Blues",100,  90, 30, 55, 5, 5, 5, 5, 5, 5, 5, 5, 5)
-            return flask.redirect(url_for('get_song_results',username=user, filename=filename))
+            logistics = generate_spectrogram(file_path)
+
+            predict_data = predict(prediction_model,file_path[:-4] + "-spectrogram.png")
+            classification = predict_data['classification']
+            confidences = predict_data['confidence']
+            print(confidences)
             
+            generate_confidence_chart(confidences, file_path)
+            print(confidences)
+            add_song(user,filename,classification, logistics['tempo'], logistics['duration'], confidences)
+            return flask.redirect(url_for('get_song_results',username=user, filename=filename))
+             
 
 @app.route("/global_uploads")
 def song_results():
@@ -119,7 +126,6 @@ def get_song_results(username, filename):
     spectrogramFilename = f"{songname}-spectrogram.png"
     song = get_song(username,filename)
     return flask.render_template("song_results.html",user=user, username=username, filename=filename, song=song, chartFilename=chartFilename, spectrogramFilename = spectrogramFilename)
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

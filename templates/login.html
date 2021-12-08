@@ -47,27 +47,27 @@
                     {% endif %}
                 </div>
                 <form id='Login' action='{{ url_for("sign_in") }}'>
-                    No account? <button @click='updateFormType()'>Create Account</button><br><br>
+                    No account? <button type='button' class="input-boxes" @click='updateFormType()'>Create Account</button><br><br>
                     <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" name="uname" required>
+                    <input type="text" class="input-boxes" placeholder="Enter Username" name="uname" required>
                     <br><br>
                     <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" class="input-boxes" placeholder="Enter Password" name="psw" required>
                     <br><br>
-                    <input type="submit" value='Login'>
+                    <input type="submit" class="input-boxes" value='Login'>
                 </form>
                 <form id='Register' action='{{ url_for("register") }}' style='display:none'>
-                    Already have an account?<button @click='updateFormType()'>Login</button><br><br>
+                    Already have an account?<button type='button' class="input-boxes" @click='updateFormType()'>Login</button><br><br>
                     <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" name="uname" required>
+                    <input type="text" class="input-boxes" placeholder="Enter Username" name="uname" required>
                     <br><br>
                     <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" class="input-boxes" placeholder="Enter Password" name="psw" required>
                     <br><br>
                     <label for="conf"><b>Confirm</b></label>
-                    <input type="password" placeholder="Confirm Password" name="conf" required>
+                    <input type="password" class="input-boxes" placeholder="Confirm Password" name="conf" required>
                     <br><br>
-                    <input type="submit" value='Register'>
+                    <input type="submit" class="input-boxes" value='Register'>
                 </form>
             </div>
         </div>

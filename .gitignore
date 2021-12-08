@@ -4,4 +4,4 @@ env
 __pycache__
 .vscode
 db
-/static/queries
+/static/queries/

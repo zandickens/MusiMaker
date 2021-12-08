@@ -149,5 +149,13 @@ html {
 
 .login-container {
   margin: 100px auto;
-  width: 50%;
+  width: 30%;
+}
+
+.input-boxes {
+  float: right !important;
+}
+
+.login-button {
+  float: center;
 }

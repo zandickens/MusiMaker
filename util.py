@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from datetime import datetime
+from datetime import date
 from flask import jsonify
 from pathlib import Path
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,6 +21,7 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import select, func
 from sqlalchemy.orm import sessionmaker, relationship
+from psycopg2.extensions import register_adapter, AsIs
 
 db = create_engine(os.environ["DB_URL"])
 metadata = MetaData(db)
@@ -64,6 +65,11 @@ class Songs(ORM_Base):
     date = Column(Date)
 
 
+# def parse_float(numpy_float32):
+#     return register_adapter(numpy.float32,AsIs(numpy_float64))
+# # register_adapter(numpy.float64, addapt_numpy_float64)
+# # register_adapter(numpy.int64, addapt_numpy_int64)
+
 def create_user(username, password):
     try:
         password_hash = generate_password_hash(password)
@@ -101,34 +107,37 @@ def get_userid(username):
     )
     return user.userid
 
-def add_song(user, filename, top_classification, confidence, tempo, length, blues, classical, country, disco, hiphop, jazz, metal, pop, reggae, rock):
+def add_song(user, filename, top_classification, tempo, length, classification_arr):
     #  assuming user is present in table
-    try:
+    # try:
+        confidence = max(classification_arr, key = lambda i : i[1])[1]
+        print(confidence,classification_arr[0][1])
+
         songs = Table("songs", metadata, autoload=True)
         db.execute(
             songs.insert(),
             userid=get_userid(user),
             filename=filename,
             username=user,
-            top_classification=top_classification,
-            confidence=confidence,
-            blues=blues, 
-            classical=classical, 
-            country=country, 
-            disco=disco, 
-            hiphop=hiphop,
-            jazz=jazz,
-            metal=metal,
-            pop=pop,
-            reggae=reggae,
-            rock=rock,
+            top_classification=top_classification.capitalize(),
+            confidence=round(confidence,5),
+            blues=round(classification_arr[0][1],5), 
+            classical=round(classification_arr[1][1],5), 
+            country=round(classification_arr[2][1],5), 
+            disco=round(classification_arr[3][1],5), 
+            hiphop=round(classification_arr[4][1],5),
+            jazz=round(classification_arr[5][1],5),
+            metal=round(classification_arr[6][1],5),
+            pop=round(classification_arr[7][1],5),
+            reggae=round(classification_arr[8][1],5),
+            rock=round(classification_arr[9][1],5),
             tempo = tempo,
             length = length,
-            date=datetime.now(),
+            date=str(date.today()),
         )
-        return True
-    except:
-        return False
+    #     return True
+    # except:
+    #     return False
 
 def delete_song(user, filename):
     try:
@@ -219,6 +228,7 @@ def get_song(username,filename):
     return song
 
 def generate_confidence_chart(confidenceArray, file_path):
+    plt.close()
     file_name = file_path.split('/')[-1]
     file_type = file_name.split('.')[1]
     song_name = file_name.split('.')[0]
