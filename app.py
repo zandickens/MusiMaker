@@ -6,12 +6,12 @@ import sys
 from pathlib import Path
 from flask import Flask, redirect, request, make_response, flash, url_for, Response
 from flask.templating import render_template
-from util import add_song, create_user, sign_in_user, get_all_songs, get_user_songs, get_song, generate_confidence_chart
+from util import add_song, create_user, sign_in_user, get_all_songs, get_user_songs, get_song, generate_data
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
-from Backend.queryflask import predict, load_latest_model
+from Backend.queryflask import load_latest_model
 
 EXTENSIONS = {'wav','mp3'}
 
@@ -89,16 +89,7 @@ def upload_song():
             Path('static/queries/' + filename).mkdir(parents=True, exist_ok=True)
             file.save(file_path)
             print('File saved to disk.')
-            logistics = generate_spectrogram(file_path)
-
-            predict_data = predict(prediction_model,file_path[:-4] + "-spectrogram.png")
-            classification = predict_data['classification']
-            confidences = predict_data['confidence']
-            print(confidences)
-            
-            generate_confidence_chart(confidences, file_path)
-            print(confidences)
-            add_song(user,filename,classification, logistics['tempo'], logistics['duration'], confidences)
+            generate_data( prediction_model=prediction_model, file_path=file_path, filename=filename, user=user)
             return flask.redirect(url_for('get_song_results',username=user, filename=filename))
              
 
