@@ -39,13 +39,11 @@ drums.tempos.add(qpm=60)
 
 # Initialize the model.
 def generateMelody():
-  print("Initializing Melody RNN...")
   bundle = sequence_generator_bundle.read_bundle_file('./Models/attention_rnn.mag')
   generator_map = melody_rnn_sequence_generator.get_generator_map()
   melody_rnn = generator_map['attention_rnn'](checkpoint=None, bundle=bundle)
   melody_rnn.initialize()
 
-  print('🎉 Done!')
 
   inputmidi = midi_io.midi_file_to_note_sequence('./Queries/convertMelody.mid')
 
@@ -73,13 +71,10 @@ def generateMelody():
 
 
 def generateDrums():
-  print("Initializing Drums RNN...")
   bundle = sequence_generator_bundle.read_bundle_file('./Models/drum_kit_rnn.mag')
   generator_map = drums_rnn_sequence_generator.get_generator_map()
   drums_rnn = generator_map['drum_kit'](checkpoint=None, bundle=bundle)
   drums_rnn.initialize()
-
-  print('🎉 Done!')
 
   inputmidi = midi_io.midi_file_to_note_sequence('./Queries/convertDrum.mid')
 
