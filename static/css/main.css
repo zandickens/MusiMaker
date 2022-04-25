@@ -159,3 +159,7 @@ html {
 .login-button {
   float: center;
 }
+
+.spotify-song-row{
+  height:50px;
+}

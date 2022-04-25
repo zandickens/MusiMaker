@@ -12,6 +12,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
 from Backend.queryflask import load_latest_model
+from Backend.spotify import search_track, get_track, download_track
 
 EXTENSIONS = {'wav','mp3'}
 
@@ -88,10 +89,10 @@ def upload_song():
             file_path = os.path.join('static/queries/' + filename + '/', filename)
             Path('static/queries/' + filename).mkdir(parents=True, exist_ok=True)
             file.save(file_path)
+            file.close()
             print('File saved to disk.')
             generate_data( prediction_model=prediction_model, file_path=file_path, filename=filename, user=user)
             return flask.redirect(url_for('get_song_results',username=user, filename=filename))
-             
 
 @app.route("/global_uploads")
 def song_results():
@@ -118,5 +119,25 @@ def get_song_results(username, filename):
     song = get_song(username,filename)
     return flask.render_template("song_results.html",user=user, username=username, filename=filename, song=song, chartFilename=chartFilename, spectrogramFilename = spectrogramFilename)
 
+@app.route('/spotify_search', methods=["POST", "GET"])
+def spotify():
+    return flask.render_template('spotify_search.html',user=user, songs={})
+     
+@app.route('/search_song', methods=["POST", "GET"])
+def search_song():
+    song = request.args.get('spsearch')
+    print(song)
+    spotify_songs = search_track(song)
+    return flask.render_template('spotify_search.html',user=user, songs=spotify_songs)
+
+@app.route('/spotify_song/<track_id>', methods=["POST", "GET"])
+def upload_spotify_song(track_id):
+    track = get_track(track_id=track_id)
+    file_path = download_track(track)
+    filename = os.path.basename(file_path)
+    generate_data(prediction_model=prediction_model,file_path=file_path, filename=filename, user=user)
+    return flask.redirect(url_for('get_song_results',username=user, filename=filename))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
+ 
