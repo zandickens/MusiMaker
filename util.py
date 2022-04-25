@@ -22,6 +22,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import select, func
 from sqlalchemy.orm import sessionmaker, relationship
 from psycopg2.extensions import register_adapter, AsIs
+from Backend.queryflask import predict
+from Backend.spectrogramgenerator import generate_spectrogram
 
 db = create_engine(os.environ["DB_URL"])
 metadata = MetaData(db)
@@ -253,3 +255,15 @@ def generate_confidence_chart(confidenceArray, file_path):
     fig1.set_facecolor((.2,.2,.2))
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.      
     plt.savefig(file_parent_path / f"{song_name}-chart.png", dpi=300)
+
+def generate_data(prediction_model, file_path, filename, user):
+    logistics = generate_spectrogram(file_path)
+
+    predict_data = predict(prediction_model,file_path[:-4] + "-spectrogram.png")
+    classification = predict_data['classification']
+    confidences = predict_data['confidence']
+    print(confidences)
+    
+    generate_confidence_chart(confidences, file_path)
+    print(confidences)
+    add_song(user,filename,classification, logistics['tempo'], logistics['duration'], confidences)
