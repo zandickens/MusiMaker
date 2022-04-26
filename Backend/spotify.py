@@ -13,21 +13,26 @@ auth_manager = SpotifyClientCredentials(
 )
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
-
-def search_track(track):
-    tracks = sp.search(q='track:' + track, type='track', limit=25)
-    return tracks.get('tracks').get('items')
-
-def get_user_playlists(user):
-    return sp.user_playlist(user)
+def search_album(album):
+    return sp.search(q='album:' + album, type='album', limit=25).get('albums').get('items')
 
 def get_playlist(playlist_id):  
     return sp.playlist(playlist_id=playlist_id)
 
+def fetch_user_playlists(user):
+    return sp.user_playlists(user).get('items')
+
+def get_playlist(playlist_id):  
+    return sp.playlist(playlist_id=playlist_id)
+
+def search_song(track):
+    tracks = sp.search(q='track:' + track, type='track', limit=25)
+    return tracks.get('tracks').get('items')
+
 def get_track(track_id):
     return sp.track(track_id=track_id)
 
-def download_track(track):
+def download_song(track):
     filename = secure_filename(track.get('name').replace(' ','_') + ".mp3")
     file_path = os.path.join('static/queries/' + filename + '/', filename)
     Path('./static/queries/' + filename).mkdir(parents=True, exist_ok=True)
@@ -39,5 +44,5 @@ def download_track(track):
     f.close()
     return file_path
 
-# print(search_track("Sicko Mode"))
+# print(search_album("Kauai"))
 #download_track(get_track('1nRTH500HbZX8PYwT4ZMby'))

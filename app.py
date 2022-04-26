@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
 from Backend.queryflask import load_latest_model
-from Backend.spotify import search_track, get_track, download_track
+from Backend.spotify import search_song, search_album, fetch_user_playlists, download_song
 
 EXTENSIONS = {'wav','mp3'}
 
@@ -121,14 +121,25 @@ def get_song_results(username, filename):
 
 @app.route('/spotify_search', methods=["POST", "GET"])
 def spotify():
-    return flask.render_template('spotify_search.html',user=user, songs={})
+    return flask.render_template('spotify_search.html',user=user)
      
-@app.route('/search_song', methods=["POST", "GET"])
-def search_song():
+@app.route('/spotify_song', methods=["POST", "GET"])
+def spotify_song():
     song = request.args.get('spsearch')
-    print(song)
-    spotify_songs = search_track(song)
-    return flask.render_template('spotify_search.html',user=user, songs=spotify_songs)
+    spotify_songs = search_song(song)
+    return flask.render_template('spotify_song_search.html',user=user, songs=spotify_songs)
+
+@app.route('/spotify_album', methods=["POST", "GET"])
+def spotify_album():
+    album = request.args.get('spsearch')
+    albums = search_album(album)
+    return flask.render_template('spotify_album_search.html',user=user, albums=albums)
+
+@app.route('/spotify_playlist', methods=["POST", "GET"])
+def spotify_playlist():
+    spotify_user = request.args.get('spsearch')
+    playlists = fetch_user_playlists(spotify_user)
+    return flask.render_template('spotify_playlist_search.html',user=user, playlists=playlists)
 
 @app.route('/spotify_song/<track_id>', methods=["POST", "GET"])
 def upload_spotify_song(track_id):

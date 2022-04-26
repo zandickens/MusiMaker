@@ -160,6 +160,15 @@ html {
   float: center;
 }
 
-.spotify-song-row{
-  height:50px;
+#spotify-table {
+  margin-bottom: 50px;
+}
+
+#spotify-table tbody tr:hover {
+  background-color:#6f4787;
+  cursor: pointer; 
+}
+
+#spotify-table tbody td {
+  vertical-align: middle;
 }

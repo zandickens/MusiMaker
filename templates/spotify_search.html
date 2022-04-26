@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/slate/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="/static/js/album_cover.js"></script>
+</head>
+<script>
+
+</script>
+<body>
+    <div id="app">
+        <template>
+            <b-navbar>
+                <template #brand>
+                    <b-navbar-item href="/">
+                        <img class="navbar-logo" src="static/assets/images/logo.png" alt="MusiMaker">
+                    </b-navbar-item>
+                    <b-navbar-item href="/global_uploads">
+                        <a class="navbar-text" alt="Global Uploads">
+                            Global Uploads
+                            </a>
+                    </b-navbar-item>
+                </template>
+                <template #start>
+
+                </template>
+
+                <template #end>
+                    {% if user != "no_current_user" %}
+                    <b-navbar-item>
+                        <a class='navbar-text' href='/user_uploads'>
+                            {{user}}
+                        </a>
+                    </b-navbar-item>
+                    <b-navbar-item>
+                        <a class='navbar-text-logout' href='/sign_out'>
+                             LOGOUT
+                        </a>
+                    </b-navbar-item>
+                    {% else %}
+                    <b-navbar-item>
+                    <a href='login' class='navbar-text'>
+                        SIGN IN
+                    </a>
+                    </b-navbar-item>
+                    {% endif %}
+                    <b-navbar-item>
+                        <a href="https://github.com/zandickens/MusiMaker">
+                            <img class="github-logo" src="static/assets/images/github.png" alt="GitHub Repository">
+                        </a>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
+        </template>
+
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <div class="content tagline header">
+                        <h1 class="white-font"> Search Spotify for:
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="container">
+            <form  action="{{ url_for('spotify_song') }}" id="spotify_form">
+                <input type="radio" name="selection" id='song' onchange="changeForm()" checked>
+                <label for="filter1-0">Song</label>
+                <input type="radio" name="selection" id='album' onchange="changeForm()">
+                <label for="filter1-1"> Album </label>
+                <input type="radio" name="selection" id='playlist' onchange="changeForm()">
+                <label for="filter1-2"> Playlist </label>
+                <input name='spsearch' id='spsearch' type="text" v-model="search" placeholder="Search Song" /> 
+                <input type='submit'/>
+            </form>
+        </div>
+        
+
+    </div>
+</body>
+
+
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+<script>
+    var vue_init = new Vue({
+        el: "#app",
+        delimiters: ["${", "}"],
+        data: {
+        },
+        methods: {}
+    });
+</script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/slate/bulmaswatch.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="/static/js/album_cover.js"></script>
+    <script>const spotify_songs = {{ songs | tojson }};</script>
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <b-navbar>
+                <template #brand>
+                    <b-navbar-item href="/">
+                        <img class="navbar-logo" src="static/assets/images/logo.png" alt="MusiMaker">
+                    </b-navbar-item>
+                    <b-navbar-item href="/global_uploads">
+                        <a class="navbar-text" alt="Global Uploads">
+                            Global Uploads
+                            </a>
+                    </b-navbar-item>
+                </template>
+                <template #start>
+
+                </template>
+
+                <template #end>
+                    {% if user != "no_current_user" %}
+                    <b-navbar-item>
+                        <a class='navbar-text' href='/user_uploads'>
+                            {{user}}
+                        </a>
+                    </b-navbar-item>
+                    <b-navbar-item>
+                        <a class='navbar-text-logout' href='/sign_out'>
+                             LOGOUT
+                        </a>
+                    </b-navbar-item>
+                    {% else %}
+                    <b-navbar-item>
+                    <a href='login' class='navbar-text'>
+                        SIGN IN
+                    </a>
+                    </b-navbar-item>
+                    {% endif %}
+                    <b-navbar-item>
+                        <a href="https://github.com/zandickens/MusiMaker">
+                            <img class="github-logo" src="static/assets/images/github.png" alt="GitHub Repository">
+                        </a>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
+        </template>
+
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <div class="content tagline header">
+                        <h1 class="white-font"> Spotify Search
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="container" id="spotify-table">
+            <form  action="{{ url_for('search_song') }}">
+                <input name='spsearch' id='spsearch' type="text" v-model="search" placeholder="Search Song" /> 
+                <input type='submit'/>
+            </form>
+            <br> <br>
+            {% if songs|length != 0 %}
+            <div id="table_wrapper" >
+                <template>
+                    <b-table :striped="true" :data="songs" :columns="columns" @click="songClicked($event)">
+                        <template #cell(show_details)="row">
+                            <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+                            </b-button>
+                    
+                            <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
+                            <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
+                              Details via check
+                            </b-form-checkbox>
+                          </template>
+                    </b-table>
+                </template>
+            </div>
+            {% endif %}
+        </div>
+        
+
+    </div>
+</body>
+
+
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
+<script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+<script>
+    var vue_init = new Vue({
+        el: "#app",
+        delimiters: ["${", "}"],
+        data: {
+            songs: spotify_songs,
+            columns : [
+                {
+                    field: 'album.images.0.url',
+                    label:'Album Cover',
+                    sortable:false,
+                },
+                {
+                    field: 'name',
+                    label: 'Song Name',
+                    numeric:false,
+                    sortable:false,
+                },
+                {
+                    field: 'album.name',
+                    label: 'Album',
+                    numeric:false,
+                    sortable:false,
+                },
+                {
+                    field: 'artists.0.name',
+                    label: 'Artist',
+                    numeric:false,
+                    sortable:false,
+                },
+                {
+                    field: 'album.release_date',
+                    label: 'Release Date',
+                    numeric:false,
+                    sortable:false,
+                }
+            ]
+        },
+        methods: {
+            songClicked: function(event) {
+                window.location.href = '/spotify_song/' + event.id
+            },
+        }
+    });
+</script>
+<script>
+    window.addEventListener("load", function(event) {
+        generate_img()
+        document.getElementById('table_wrapper').style.display = 'block';
+    });
+  </script>
+</html>
