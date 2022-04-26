@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
 from Backend.queryflask import load_latest_model
-from Backend.spotify import search_song, search_album, fetch_user_playlists, download_song
+from Backend.spotify import get_track,download_song,search_song, search_album, fetch_user_playlists, download_song
 
 EXTENSIONS = {'wav','mp3'}
 
@@ -144,7 +144,7 @@ def spotify_playlist():
 @app.route('/spotify_song/<track_id>', methods=["POST", "GET"])
 def upload_spotify_song(track_id):
     track = get_track(track_id=track_id)
-    file_path = download_track(track)
+    file_path = download_song(track)
     filename = os.path.basename(file_path)
     generate_data(prediction_model=prediction_model,file_path=file_path, filename=filename, user=user)
     return flask.redirect(url_for('get_song_results',username=user, filename=filename))
