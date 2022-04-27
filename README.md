@@ -1,7 +1,5 @@
 ![MusiMaker Logo](https://github.com/zandickens/MusiMaker/blob/main/static/assets/images/musimaker-logo.png)
 
-# MusiMaker
-
 ## About
 MusiMaker is a software designed to classify audio files by numerous parameters and create a beat similar to songs given by the user. The software will take in any audio file (.mp4, .wav, ect.) and generate a MIDI file with a beat similar to inputted songs.
 When creating a new beat/song, many people have samples that they want their new beat to sound similar to. With MusiMaker, this user would be able to create a template beat directly from a list of songs they choose. This app would also allow for organization and storage of the user's favorite generated samples, as well as songs they like to use when generating new music.
