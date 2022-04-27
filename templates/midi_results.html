@@ -9,16 +9,7 @@
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.4.0"></script>
-    <script>
-        const file = 'static/queries/generated_MIDI/' + {{ recent_file | tojson }};
-    </script>
-
-    <script>
-        window.onload = function (){
-            document.getElementById('midi').href = file
-        document.getElementById('midi-player').src = file
-        }
-    </script>
+    
 </head>
 
 <body>
@@ -27,7 +18,7 @@
             <b-navbar>
                 <template #brand>
                     <b-navbar-item href="/">
-                        <img class="navbar-logo" src="static/assets/images/musimaker-logo.png" alt="MusiMaker">
+                        <img class="navbar-logo" src="{{ url_for('static', filename='assets/images/musimaker-logo.png') }}" alt="MusiMaker">
                     </b-navbar-item>
                     <b-navbar-item href="/global_uploads">
                         <a class="navbar-text" alt="Global Uploads">
@@ -70,26 +61,27 @@
                     {% endif %}
                     <b-navbar-item>
                         <a href="https://github.com/zandickens/MusiMaker">
-                            <img class="github-logo" src="static/assets/images/github.png" alt="GitHub Repository">
+                            <img class="github-logo" src="/static/assets/images/github.png" alt="GitHub Repository">
                         </a>
                     </b-navbar-item>
                 </template>
             </b-navbar>
             <div class="container">
-            <img src="static/assets/images/generationresults-image.png">
+            <img src="{{ url_for('static', filename='assets/images/generationresults-image.png') }}">
             </div>
         </template>
         <div class = 'midi-result'>
             <midi-player
                 class = 'midi-player'
-                id = 'midi-player'
+                src="{{ url_for('static', filename='queries/generated_MIDI/convert.mid') }}"
                 sound-font visualizer="#myVisualizer">
             </midi-player>
             <midi-visualizer type="piano-roll" id="myVisualizer"></midi-visualizer>
-            <a id="midi" download="Midi">
-                <button class="upload-button" type="button">Download</button>
+            <a href="{{ url_for('static', filename='queries/generated_MIDI/convert.mid') }}" download="GFG">
+                <button type="button">Download</button>
             </a>
         </div>
+
     </div>
 </body>
 
