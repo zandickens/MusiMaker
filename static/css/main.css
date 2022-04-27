@@ -66,10 +66,8 @@ td {
 .file-upload {
   padding: 25px;
   background-color: #2f3236;
-}
-
-.upload-container {
   width: 100%;
+  display: inline-block;
 }
 
 label.upload {
@@ -87,6 +85,22 @@ html {
 .home-banner {
   margin-top: 75px;
 }
+.midi-result {
+  margin-top: 75px;
+  padding: 25px;
+  background-color: #45494e;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.midi-player {
+  background-color: #45494e;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left:25%;
+}
+
 
 .table {
   -webkit-box-shadow: 0px 13px 0px -3px rgba(0,0,0,0.39); 

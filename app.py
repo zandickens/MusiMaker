@@ -1,3 +1,4 @@
+from fileinput import filename
 import flask
 import json
 import os
@@ -13,8 +14,9 @@ from werkzeug.utils import secure_filename
 from Backend.spectrogramgenerator import generate_spectrogram
 from Backend.queryflask import load_latest_model
 from Backend.spotify import get_track,download_song,search_song, search_album, fetch_user_playlists, download_song
+from Backend.MusicGenerator import generateDrums, generateMelody
 
-EXTENSIONS = {'wav','mp3'}
+EXTENSIONS = {'wav','mp3','mid'}
 
 app = Flask(__name__)
 SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -148,6 +150,56 @@ def upload_spotify_song(track_id):
     filename = os.path.basename(file_path)
     generate_data(prediction_model=prediction_model,file_path=file_path, filename=filename, user=user)
     return flask.redirect(url_for('get_song_results',username=user, filename=filename))
+
+@app.route('/midi_upload', methods=["POST", "GET"])
+def midi_upload():
+    return flask.render_template('midi_upload.html',user=user)
+
+@app.route('/midi_melody_upload', methods=["POST", "GET"])
+def midi_melody_upload():
+    filename = ''
+    if request.method == "POST":
+        if 'file' not in request.files:
+            print('File not found', flush=True)
+            return redirect("http://localhost:5000/not_in")
+        file = request.files['file']
+        if file.filename == '':
+            print('No selected file', flush=True)
+            return redirect("http://localhost:5000/no_selected")
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file_path = 'static/queries/midi_temp_upload/temp.mid'
+            file.save(file_path)
+            file.close()
+            print('File saved to disk.')
+            generateMelody(file.filename)
+
+    return flask.redirect('/midi_results/'+filename)
+
+@app.route('/midi_drum_upload', methods=["POST", "GET"])
+def midi_drum_upload():
+    filename = ''
+    if 'file' not in request.files:
+        print('File not found', flush=True)
+        return redirect("http://localhost:5000/not_in")
+    file = request.files['file']
+    if file.filename == '':
+        print('No selected file', flush=True)
+        return redirect("http://localhost:5000/no_selected")
+    if file and allowed_file(file.filename):
+        filename = file.filename
+        file_path = 'static/queries/midi_temp_upload/temp.mid'
+        file.save(file_path)
+        file.close()
+        print('File saved to disk.')
+        generateDrums(file.filename)
+
+    return flask.redirect('/midi_results/'+file.filename)
+
+@app.route('/midi_results/<recent_file>', methods=["POST", "GET"])
+def midi_results(recent_file):
+    return flask.render_template('midi_results.html',user=user,recent_file=recent_file)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

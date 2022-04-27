@@ -17,11 +17,21 @@
             <b-navbar>
                 <template #brand>
                     <b-navbar-item href="/">
-                        <img class="navbar-logo" src="static/assets/images/logo.png" alt="MusiMaker">
+                        <img class="navbar-logo" src="static/assets/images/musimaker-logo.png" alt="MusiMaker">
                     </b-navbar-item>
                     <b-navbar-item href="/global_uploads">
                         <a class="navbar-text" alt="Global Uploads">
                             Global Uploads
+                            </a>
+                    </b-navbar-item>
+                    <b-navbar-item href="/midi_upload">
+                        <a class="navbar-text" alt="Midi Upload">
+                            Midi Upload
+                            </a>
+                    </b-navbar-item>
+                    <b-navbar-item href="/spotify_search">
+                        <a class="navbar-text" alt="Spotify Search">
+                            Spotify Search
                             </a>
                     </b-navbar-item>
                 </template>
@@ -58,23 +68,33 @@
         </template>
 
         <div class="container">
+            <figure class="image">
+                <br><br><img src="static/assets/images/musimaker-logo.png">
+                <div class="content tagline">
+                <h1 style="color: #efefef; text-align: center;"> MusiMaker is a music classification and generation software. When a user uploads a .mp3 or .wav file of their choice, the uploaded file is converted into a spectrogram and analyzed by a neural network. Additionally, a user can upload their rhythm and melody midi files and generate continuations of these files for endless inspiration.</h1>
+                </div>
+            </figure>
             <div class="columns home-banner">
                 <div class="column">
-                    <figure class="image">
-                        <img src="static/assets/images/logo.png">
-                    </figure>
+                    <div class="content tagline">
+                    <img src="static/assets/images/generation-image.png">
+                    <h2 style="color: #efefef; text-align: center;">Midi generation for getting a quick start to your music projects. <br> <br>
+                        Get started by uploading a .midi file <a href="/midi_upload" style="color:rgb(222, 199, 255);text-decoration: underline;">here</a>.
+                    </h2>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="content tagline">
-                        <h1 style="color: #efefef;">Genre classification for the avant-garde composer. <br> <br>
-                            Get started by uploading a .mp3 or .wav file below, or <a href="/spotify_search" style="color:rgb(222, 199, 255);text-decoration: underline;">select a song from Spotify</a>.
-                        </h1>
+                        <img src="static/assets/images/classification-image.png">
+                        <h2 style="color: #efefef; text-align: center;">Genre classification for the avant-garde composer. <br> <br>
+                            Get started by uploading a .mp3 or .wav file or searching for a song on Spotify <a href="/spotify_search" style="color:rgb(222, 199, 255);text-decoration: underline;">here</a>.
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container file-upload">
+        <!-- <div class="container file-upload">
                 <template>
                     <section>
                         <b-field>
@@ -86,7 +106,6 @@
                                             </b-icon>
                                         </p>
                                         <p>Drop your files here or click to upload</p>
-                                        <!-- <input type='file' id='song' name='song'> -->
                                     </div>
                                 </section>
                             </b-upload>
@@ -104,8 +123,9 @@
                             <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="true"></b-loading>
                     </section>
                 </template>
-        </div>
-
+        </div> -->
+        <br><br><br><br>
+        <br><br><br><br>
 
     </div>
 </body>

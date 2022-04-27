@@ -38,14 +38,14 @@ drums.tempos.add(qpm=60)
 
 
 # Initialize the model.
-def generateMelody():
-  bundle = sequence_generator_bundle.read_bundle_file('./Models/attention_rnn.mag')
+def generateMelody(filename):
+  bundle = sequence_generator_bundle.read_bundle_file('./Backend/Models/attention_rnn.mag')
   generator_map = melody_rnn_sequence_generator.get_generator_map()
   melody_rnn = generator_map['attention_rnn'](checkpoint=None, bundle=bundle)
   melody_rnn.initialize()
 
 
-  inputmidi = midi_io.midi_file_to_note_sequence('./Queries/convertMelody.mid')
+  inputmidi = midi_io.midi_file_to_note_sequence('static/queries/midi_temp_upload/temp.mid')
 
   input_sequence = inputmidi # change this to teapot if you want
   num_steps = 64 # change this for shorter or longer sequences
@@ -67,17 +67,16 @@ def generateMelody():
   # Ask the model to continue the sequence.
   sequence = melody_rnn.generate(input_sequence, generator_options)
 
-  note_seq.sequence_proto_to_midi_file(sequence, 'melody.mid')
+  note_seq.sequence_proto_to_midi_file(sequence, 'static/queries/generated_MIDI/' + filename)
 
 
-def generateDrums():
-  bundle = sequence_generator_bundle.read_bundle_file('./Models/drum_kit_rnn.mag')
+def generateDrums(filename):
+  bundle = sequence_generator_bundle.read_bundle_file('./Backend/Models/drum_kit_rnn.mag')
   generator_map = drums_rnn_sequence_generator.get_generator_map()
   drums_rnn = generator_map['drum_kit'](checkpoint=None, bundle=bundle)
   drums_rnn.initialize()
-
-  inputmidi = midi_io.midi_file_to_note_sequence('./Queries/convertDrum.mid')
-
+  
+  inputmidi = midi_io.midi_file_to_note_sequence('static/queries/midi_temp_upload/temp.mid')
   input_sequence = inputmidi # change this to teapot if you want
   num_steps = 64 # change this for shorter or longer sequences
   temperature = 1.0 # the higher the temperature the more random the sequence.
@@ -98,6 +97,6 @@ def generateDrums():
   # Ask the model to continue the sequence.
   sequence = drums_rnn.generate(input_sequence, generator_options)
 
-  note_seq.sequence_proto_to_midi_file(sequence, 'drums.mid')
+  note_seq.sequence_proto_to_midi_file(sequence,  'static/queries/generated_MIDI/' + filename)
 
-generateMelody()
+# generateMelody()

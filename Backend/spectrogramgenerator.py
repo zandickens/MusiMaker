@@ -19,7 +19,7 @@ def get_song_logistics(y,sr):
 def create_spectrogram(audio_path, song_name, audio_parent_path):
     y, sr = librosa.load(audio_path)
     audio, _ = librosa.effects.trim(y)
-    librosa.display.waveshow(audio, sr=sr)
+    librosa.display.waveplot(audio, sr=sr)
     spectrogram = librosa.feature.melspectrogram(audio, sr=sr, n_mels=200)
     spectrogram_decible = librosa.amplitude_to_db(spectrogram, ref=np.max)
     librosa.display.specshow(spectrogram_decible, sr=sr)

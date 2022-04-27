@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <script src="/static/js/album_cover.js"></script>
+    
 </head>
-<script>
 
-</script>
 <body>
     <div id="app">
         <template>
@@ -50,7 +48,7 @@
                     </b-navbar-item>
                     <b-navbar-item>
                         <a class='navbar-text-logout' href='/sign_out'>
-                             LOGOUT
+                            Logout
                         </a>
                     </b-navbar-item>
                     {% else %}
@@ -68,43 +66,18 @@
                 </template>
             </b-navbar>
         </template>
-
         <div class="container">
-            <div class="columns">
+            <div class="columns home-banner">
                 <div class="column">
-                    <div class="content tagline header">
-        
-                        <!-- <h1 class="white-font"> Search Spotify for:
-                        </h1> -->
+                    <img src="static/assets/images/melody-image.png">
+                    <div class = "content tagline">
+                        <h1 style="color: #efefef; text-align: center;"> Upload a Midi of a melody you are working on. <br> Upload your first couple notes and let MusiMaker do the rest.</h1><br>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        
-        <div class="container">
-            <div class="columns">
-                <div class="column">
-                    <img src="static/assets/images/spotifysearch-image.png">
-                    <form  action="{{ url_for('spotify_song') }}" id="spotify_form">
-                        <input type="radio" name="selection" id='song' onchange="changeForm()" checked>
-                        <label for="filter1-0">Song</label>
-                        <input type="radio" name="selection" id='album' onchange="changeForm()">
-                        <label for="filter1-1"> Album </label>
-                        <input type="radio" name="selection" id='playlist' onchange="changeForm()">
-                        <label for="filter1-2"> Playlist </label>
-                        <input name='spsearch' id='spsearch' type="text" v-model="search" placeholder="Search Song" /> 
-                        <input type='submit'/>
-                    </form>
-                </div>
-                <br><br><br>
-                <div class="column">
-                    <img src="static/assets/images/uploadmp3-image.png">
-                    <div class="container file-upload">
+                    <div class="container file-upload"> 
                         <template>
                             <section>
                                 <b-field>
-                                    <b-upload v-model="dropFiles" drag-drop>
+                                    <b-upload v-model="melodyFiles" drag-drop>
                                         <section class="section">
                                             <div class="content has-text-centered">
                                                 <p>
@@ -118,17 +91,54 @@
                                 </b-field>
 
                                 <div class="tags">
-                                    <span v-if="dropFiles" class="tag is-primary">
-                                        ${dropFiles.name}
-                                        <button class="delete is-small" type="button" @click="deleteDropFile()">
+                                    <span v-if="melodyFiles" class="tag is-primary">
+                                        ${melodyFiles.name}
+                                        <button class="delete is-small" type="button" @click="deleteMelodyFile()">
                                         </button>
                                     </span>
                                 </div>
 
-                                <b-button class="upload-button" @click="uploadFile(); openLoading();">Upload</b-button>
+                                <b-button class="upload-button" @click="uploadMelodyFile(); openLoading();">Upload</b-button>
                                     <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="true"></b-loading>
                             </section>
-                    </template>
+                        </template>
+                    </div>
+                </div>
+                <div class="column">
+                    <img src="static/assets/images/rhythm-image.png">
+                    <div class = "content tagline">
+                        <h1 style="color: #efefef; text-align: center;"> Upload a Midi of a Drum pattern you are working on. <br> Upload your first couple beats and let MusiMaker do the rest.</h1><br>
+                    </div>
+                    <div class="container file-upload">
+                        <template>
+                            <section>
+                                <b-field>
+                                    <b-upload v-model="drumFiles" drag-drop>
+                                        <section class="section">
+                                            <div class="content has-text-centered">
+                                                <p>
+                                                    <b-icon pack="fas" icon="upload" size="is-large">
+                                                    </b-icon>
+                                                </p>
+                                                <p>Drop your files here or click to upload</p>
+                                            </div>
+                                        </section>
+                                    </b-upload>
+                                </b-field>
+
+                                <div class="tags">
+                                    <span v-if="drumFiles" class="tag is-primary">
+                                        ${drumFiles.name}
+                                        <button class="delete is-small" type="button" @click="deleteDrumFile()">
+                                        </button>
+                                    </span>
+                                </div>
+
+                                <b-button class="upload-button" @click="uploadDrumFile(); openLoading();">Upload</b-button>
+                                    <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="true"></b-loading>
+                            </section>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,13 +150,9 @@
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/components/table"></script>
 <script type="application/javascript" src="https://unpkg.com/buefy/dist/components/input"></script>
+<script src="/static/js/midi.js"></script>
 <script>
-    var vue_init = new Vue({
-        el: "#app",
-        delimiters: ["${", "}"],
-        data: {
-        },
-        methods: {}
-    });
+    const user = {{user|tojson}}
 </script>
+
 </html>
